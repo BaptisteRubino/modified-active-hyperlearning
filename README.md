@@ -47,9 +47,6 @@ as well as the marginal GP (MGP) implementation available here:
 
   https://github.com/rmgarnett/mgp/
 
-Both must be in your MATLAB path. Finally, the optimization of
-the GP log posterior requires Mark Schmidt's minFunc function:
-
-  http://www.di.ens.fr/~mschmidt/Software/minFunc.html
+Both must be in your MATLAB path. 
 
 [1]: http://latex.codecogs.com/svg.latex?p(f%20%5Cmid%20%5Ctheta)%20%3D%20%5Cmathcal%7BGP%7D%5Cbigl(f%3B%20%5Cmu(x%3B%20%5Ctheta)%2C%20K(x%2C%20x%27%3B%20%5Ctheta)%5Cbigr)
