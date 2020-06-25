@@ -50,6 +50,6 @@ as well as the marginal GP (MGP) implementation available here:
 Both must be in your MATLAB path. 
 
 
-This implemantion is based on the code from Roman Garnett.
+This implemantion is based on the Roman Garnett's code.
 
 [1]: http://latex.codecogs.com/svg.latex?p(f%20%5Cmid%20%5Ctheta)%20%3D%20%5Cmathcal%7BGP%7D%5Cbigl(f%3B%20%5Cmu(x%3B%20%5Ctheta)%2C%20K(x%2C%20x%27%3B%20%5Ctheta)%5Cbigr)
