@@ -43,7 +43,10 @@ else
   case 'infLaplace'
     if nargin<6                                             % no derivative mode
       if isempty(y), y=0; end
-      ymmu = y-mu; dlp = {}; d2lp = {}; d3lp = {};
+      ymmu = y-mu;...
+          dlp = {};...
+          d2lp = {}; ...
+          d3lp = {};
       lp = -ymmu.^2/(2*sn2) - log(2*pi*sn2)/2; 
       if nargout>1
         dlp = ymmu/sn2;                      % dlp, derivative of log likelihood

@@ -30,9 +30,10 @@ clc;
 % the 5th observations points 
 
 for k=6:20 % Loop from 1 to 20 observations
+    
     model.mean_function       = {@constant_mean};
     model.covariance_function = {@isotropic_sqdexp_covariance};
-    model.likelihood          = @likGauss;
+    model.likelihood          = @likLaplace;
 
     % initial hyperparameters
     offset       = 1;
@@ -49,14 +50,14 @@ for k=6:20 % Loop from 1 to 20 observations
 
     % N(0, 0.5^2) priors on each log covariance parameter
     priors.cov  = ...
-        {get_prior(@constant_prior, 1), ...
-         get_prior(@constant_prior, 1)};
+        {get_prior(@laplace_prior,0, 1), ...
+         get_prior(@laplace_prior,0, 1)};
 
     % N(0.1, 0.5^2) prior on log noise
-    priors.lik  = {get_prior(@constant_prior, 1)};
+    priors.lik  = {get_prior(@laplace_prior,0, 1)};
 
     % N(0, 1) prior on constant mean
-    priors.mean = {get_prior(@constant_prior, 1)};
+    priors.mean = {get_prior(@laplace_prior,0, 1)};
 
     model.prior = get_prior(@independent_prior, priors);
     model.inference_method = ...
@@ -64,7 +65,7 @@ for k=6:20 % Loop from 1 to 20 observations
 
     % generate demo data
 
-    x_star = [linspace(0,1,100)]';
+    x_star = [linspace(0,1,10000)]';
 
     y_star = cos_function(x_star);
 
@@ -94,7 +95,7 @@ for k=6:20 % Loop from 1 to 20 observations
 
     fig = figure(1);
     set(gcf, 'color', 'white');
-    plot_predictions_fonction; % Plot with adequat range for x-axis
+    plot_predictions_function; % Plot with adequat range for x-axis
     title(report);
     title([report,' with ',num2str(k),' obeservations']);
     legend('95%','Objective function','observation','mean')

@@ -15,9 +15,9 @@ close all;
 % This implemantation shows the effect of increasing the number of
 % observation on the active Gaussian approximation.
 
-%If you want to plot the selection process for the next observation go to 
-%active_gp_hyperlearning/select_nextpoint and set to 1 the plot_needed
-%variable
+% If you want to plot the selection process for the next observation go to 
+% active_gp_hyperlearning/select_nextpoint and set to 1 the plot_needed
+% variable
 
 % Last modifications : 
 % - change the prior from gaussian_prior to constant_prior and reduced the
@@ -26,6 +26,8 @@ close all;
 % Error Status : 
 % Cholesky factorization error "Matrix must be positive definite." after
 % the 5th observations points 
+% Warning : 
+% Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND =  7.502579e-35. 
 
 for k=1:20
     model.mean_function       = {@constant_mean};

@@ -11,7 +11,7 @@ clc;
 
 model.mean_function       = {@constant_mean};
 model.covariance_function = {@isotropic_sqdexp_covariance};
-model.likelihood          = @likLaplace;
+model.likelihood          = @likGauss;
 
 % initial hyperparameters
 offset       = 1;
@@ -39,7 +39,7 @@ priors.mean = {get_prior(@constant_prior, 1)};
 
 model.prior = get_prior(@independent_prior, priors);
 model.inference_method = ...
-    add_prior_to_inference_method(@exact_inference, model.prior);
+    add_prior_to_inference_method(@laplace_inference, model.prior);
 
 % generate demo data
 
@@ -55,8 +55,10 @@ K = (K + K') / 2;
 y_star = mvnrnd(mu, K)';
 y_star = y_star + exp(true_hyperparameters.lik) * randn(size(y_star));
 
+for k = 1:20
+
 % setup problem struct
-problem.num_evaluations  = 15;
+problem.num_evaluations  = k;
 problem.candidate_x_star = x_star;
 
 % function is a simple lookup table
@@ -78,29 +80,11 @@ fprintf('%s\n', report);
 x = results.chosen_x;
 y = results.chosen_y;
 
-figure(1);
+fig = figure(1);
 set(gcf, 'color', 'white');
-subplot(2, 1, 1);
 plot_predictions;
-title(report);
+title([report,' with ',num2str(k),' obeservations']);
+legend('95%','Objective function','observation','mean')
+saveas(fig ,sprintf('FIG%d.png',k))
 
-% compare to random sampling
-ind = randperm(num_points, problem.num_evaluations);
-
-x = x_star(ind, :);
-y = y_star(ind);
-
-map_hyperparameters_random = minimize_minFunc(model, x, y);
-
-[~, ~, f_star_mean, f_star_variance, log_probabilities] = ...
-    gp(map_hyperparameters_random, model.inference_method, ...
-       model.mean_function, model.covariance_function, model.likelihood, ...
-       x, y, x_star, y_star);
-
-report = sprintf('LAPLACE random: E[log p(y* | x*, D)] = %0.3f', ...
-                 mean(log_probabilities));
-fprintf('%s\n', report);
-
-subplot(2, 1, 2);
-plot_predictions;
-title(report);
+end 
